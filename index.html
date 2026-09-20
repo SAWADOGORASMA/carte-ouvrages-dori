@@ -47,7 +47,7 @@
     }
 	#map-stats {
     position: absolute;
-    top: 600px;
+    top: 500px;
     right: 10px;
     z-index: 1000;
     background: white;
@@ -76,6 +76,15 @@
 #map-stats .unknown {
     color: #666;
     font-weight: bold;
+}
+.leaflet-control-layers::before {
+content: "LÉGENDE";
+display: block;
+font-weight: bold;
+font-size: 14px;
+padding: 8px 10px;
+border-bottom: 1px solid #ddd;
+text-align: center;
 }
         </style>
         <title>Carte interactive des ouvrages d'eau potable de Dori</title>
@@ -540,8 +549,8 @@ document.getElementById('count-total').textContent = countTotal;
 				imperial: false,
 				maxWidth: 100
 				}).addTo(map);
-        });       
-        setBounds();
+			});
+			setBounds();
         </script>        
     </body>
 </html>
