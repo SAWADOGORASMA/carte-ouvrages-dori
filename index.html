@@ -22,34 +22,40 @@
         }
 		
 		#map-title {
-		position: absolute;
-		top: 10px;
-		left: 60px;
-	z-index: 1000;
-	background: white;
-	padding: 10px 15px;
-	font-size: 18px;
-	font-weight: bold;
-	}
+        position: absolute;
+        top: 10px;
+        left: 60px;
+        z-index: 1000;
+        background: white;
+        padding: 10px 15px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
 
-        #map-source {
-		position: absolute;
-		bottom: 10px;
-		left: 10px;
-		z-index: 1000;
-		background: white;
-		padding: 6px 10px;
-		font-size: 11px;
-		}
+    #map-source {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        z-index: 1000;
+        background: white;
+        padding: 6px 10px;
+        font-size: 11px;
+        border-radius: 3px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
         </style>
-        <title> Carte interactive des ouvrages d'eau potable de Dori</title>
+        <title>Carte interactive des ouvrages d'eau potable de Dori</title>
     </head>
     <body>
         <div id="map-title">
 		Carte interactive des ouvrages d'eau potable de Dori
         </div>
+		<div id="map">
+        </div>
 		<div id="map-source">
-		Source : INOH 2025 & ONEA<br>
+		Source des données : INOH 2025 & ONEA<br>
 		Realisation : SAWADOGO Rasmané
         </div>
         <script src="js/qgis2web_expressions.js"></script>
@@ -270,7 +276,7 @@
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 2.0, 
+                weight: 3.0, 
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(190,207,80,0.0)',
@@ -316,17 +322,20 @@
                         <td>' + (feature.properties['FonctInv'] !== null ? autolinker.link(String(feature.properties['FonctInv']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['LIBELLE_TY'] !== null ? autolinker.link(String(feature.properties['LIBELLE_TY']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">LIBELLE_TY</th>\
+                        <td>' + (feature.properties['LIBELLE_TY'] !== null ? autolinker.link(String(feature.properties['LIBELLE_TY']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['LIBELLE_ST'] !== null ? autolinker.link(String(feature.properties['LIBELLE_ST']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">LIBELLE_ST</th>\
+                        <td>' + (feature.properties['LIBELLE_ST'] !== null ? autolinker.link(String(feature.properties['LIBELLE_ST']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">LIBELLE__1</th>\
                         <td>' + (feature.properties['LIBELLE__1'] !== null ? autolinker.link(String(feature.properties['LIBELLE__1']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['LIBELLE__2'] !== null ? autolinker.link(String(feature.properties['LIBELLE__2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                        <th scope="row">LIBELLE__2</th>\
+                        <td>' + (feature.properties['LIBELLE__2'] !== null ? autolinker.link(String(feature.properties['LIBELLE__2']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <th scope="row">AnExecPEM</th>\
@@ -335,10 +344,6 @@
                     <tr>\
                         <th scope="row">NOM_PROJET</th>\
                         <td>' + (feature.properties['NOM_PROJET'] !== null ? autolinker.link(String(feature.properties['NOM_PROJET']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <th scope="row">annee</th>\
-                        <td>' + (feature.properties['annee'] !== null ? autolinker.link(String(feature.properties['annee']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
