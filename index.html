@@ -45,6 +45,38 @@
         border-radius: 3px;
         box-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
+	#map-stats {
+    position: absolute;
+    top: 300px;
+    right: 10px;
+    z-index: 1000;
+    background: white;
+    padding: 10px 15px;
+    font-size: 13px;
+    line-height: 1.7;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+}
+
+#map-stats .stats-title {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#map-stats .functional {
+    color: green;
+    font-weight: bold;
+}
+
+#map-stats .broken {
+    color: red;
+    font-weight: bold;
+}
+
+#map-stats .unknown {
+    color: #666;
+    font-weight: bold;
+}
         </style>
         <title>Carte interactive des ouvrages d'eau potable de Dori</title>
     </head>
@@ -52,6 +84,13 @@
         <div id="map-title">
 		Carte interactive des ouvrages d'eau potable de Dori
         </div>
+		<div id="map-stats">
+    <div class="stats-title">État des ouvrages</div>
+    <div class="functional">🟢 Fonctionnels : <span id="count-functional">0</span></div>
+    <div class="broken">🔴 En panne : <span id="count-broken">0</span></div>
+    <div class="unknown">⚪ Non renseignés : <span id="count-unknown">0</span></div>
+    <div><strong>Total : <span id="count-total">0</span></strong></div>
+</div>
 		<div id="map">
         </div>
 		<div id="map-source">
@@ -409,6 +448,30 @@
         });
         bounds_group.addLayer(layer_point_d_eau_2);
         map.addLayer(layer_point_d_eau_2);
+		// Calcul automatique des statistiques des ouvrages
+var countFunctional = 0;
+var countBroken = 0;
+var countUnknown = 0;
+
+json_point_d_eau_2.features.forEach(function(feature) {
+    var etat = feature.properties['FonctInv'];
+
+    if (etat === 'F') {
+        countFunctional++;
+    } else if (etat === 'P') {
+        countBroken++;
+    } else if (etat === null || etat === '' || etat === undefined) {
+        countUnknown++;
+    }
+});
+
+var countTotal = json_point_d_eau_2.features.length;
+
+// Affichage des statistiques
+document.getElementById('count-functional').textContent = countFunctional;
+document.getElementById('count-broken').textContent = countBroken;
+document.getElementById('count-unknown').textContent = countUnknown;
+document.getElementById('count-total').textContent = countTotal;
         var overlaysTree = [
             {label: 'point_d_eau<br /><table><tr><td style="text-align: center;"><img src="legend/point_d_eau_2_Bornefontaine0.png" /></td><td>Borne fontaine</td></tr><tr><td style="text-align: center;"><img src="legend/point_d_eau_2_Forage1.png" /></td><td>Forage</td></tr></table>', layer: layer_point_d_eau_2},
             {label: '<img src="legend/communededori_1.png" /> commune de dori', layer: layer_communededori_1},
@@ -471,7 +534,12 @@
                     controlLayersElement.classList.remove('leaflet-control-layers-expanded');
                     isLayersListExpanded = !isLayersListExpanded;
                 }, 500);
-            }  
+				}
+				L.control.scale({
+				position: 'bottomright',
+				imperial: false,
+				maxWidth: 100
+				}).addTo(map);
         });       
         setBounds();
         </script>        
